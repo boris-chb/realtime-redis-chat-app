@@ -11,11 +11,10 @@ interface pageProps {}
 const Page: FC<pageProps> = ({}) => {
   const [isLoading, setIsLoading] = useState<boolean>(false);
 
-  const signInWithGoogle = async () => {
+  const signInWithProvider = async (provider: 'google' | 'github') => {
     setIsLoading(true);
     try {
-      throw new Error('not working');
-      await signIn('google');
+      await signIn(provider);
     } catch (error) {
       toast.error('Something went wrong');
       console.error(error);
@@ -37,7 +36,7 @@ const Page: FC<pageProps> = ({}) => {
           className='w-full max-w-sm mx-auto'
           isLoading={isLoading}
           type='button'
-          onClick={signInWithGoogle}
+          onClick={() => signInWithProvider('google')}
         >
           {!isLoading ? (
             <div className='flex flex-row gap-3'>
@@ -49,6 +48,16 @@ const Page: FC<pageProps> = ({}) => {
               />
               Sign In with Google
             </div>
+          ) : null}
+        </Button>
+        <Button
+          className='w-full max-w-sm mx-auto'
+          isLoading={isLoading}
+          type='button'
+          onClick={() => signInWithProvider('github')}
+        >
+          {!isLoading ? (
+            <div className='flex flex-row gap-3'>Sign In with Github</div>
           ) : null}
         </Button>
       </div>

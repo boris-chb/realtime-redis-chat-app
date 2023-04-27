@@ -1,11 +1,19 @@
 import { UpstashRedisAdapter } from '@next-auth/upstash-redis-adapter';
 import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
+import GithubProvider from 'next-auth/providers/github';
 import { db } from './db';
 
-function getGoogleCredentials() {
-  const clientId = process.env.GOOGLE_CLIENT_ID as string;
-  const clientSecret = process.env.GOOGLE_CLIENT_SECRET as string;
+function getCredentials(provider: 'google' | 'github') {
+  let clientId, clientSecret;
+
+  if (provider === 'google') {
+    clientId = process.env.GOOGLE_CLIENT_ID as string;
+    clientSecret = process.env.GOOGLE_CLIENT_SECRET as string;
+  } else if (provider === 'github') {
+    clientId = process.env.GITHUB_CLIENT_ID as string;
+    clientSecret = process.env.GITHUB_CLIENT_SECRET as string;
+  }
 
   if (!clientId || clientId.length === 0)
     throw new Error('Missing GOOGLE_CLIENT_ID');
@@ -24,8 +32,12 @@ export const authOptions: NextAuthOptions = {
   pages: { signIn: '/login' },
   providers: [
     GoogleProvider({
-      clientId: getGoogleCredentials().clientId,
-      clientSecret: getGoogleCredentials().clientSecret,
+      clientId: getCredentials('google').clientId,
+      clientSecret: getCredentials('google').clientSecret,
+    }),
+    GithubProvider({
+      clientId: getCredentials('github').clientId,
+      clientSecret: getCredentials('github').clientSecret,
     }),
   ],
   callbacks: {
