@@ -1,7 +1,7 @@
 import { authOptions } from '@/lib/auth';
 import { getServerSession } from 'next-auth';
 import { FC, ReactElement, ReactNode } from 'react';
-import { notFound } from 'next/navigation';
+import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
 import { FaTelegramPlane } from 'react-icons/fa';
@@ -11,6 +11,7 @@ import { Sidebar } from 'lucide-react';
 import Image from 'next/image';
 import SignOutButton from '@/components/SignOutButton';
 import FriendRequestSidebarOption from '@/components/FriendRequestSidebarOption';
+import { fetchRedis } from '@/helpers/redis';
 
 interface LayoutProps {
   children: ReactNode;
@@ -34,6 +35,17 @@ const sidebarOptions: SidebarOption[] = [
 
 const Layout = async ({ children }: LayoutProps) => {
   const session = await getServerSession(authOptions);
+  if (!session) redirect('/login');
+
+  const userId = session.user.id;
+
+  // TODO
+  // const initialRequestCount = (
+  //   (await fetchRedis(
+  //     'smembers',
+  //     `user:${userId}:incoming_friend_requests`
+  //   )) as User[]
+  // ).length;
 
   const chatsData = [
     { id: 1, title: 'Chat 1' },
@@ -42,7 +54,6 @@ const Layout = async ({ children }: LayoutProps) => {
     { id: 4, title: 'Chat 4' },
   ];
 
-  if (!session) notFound();
   const userInfoTab = (
     <div className='flex items-center flex-1 px-6 py-3 text-sm font-semibold leading-6 text-gray-900 gap-x-4'>
       <div className='relative w-8 h-8 bg-gray-50'>
@@ -96,7 +107,7 @@ const Layout = async ({ children }: LayoutProps) => {
         ))}
 
         <li>
-          <FriendRequestSidebarOption />
+          <FriendRequestSidebarOption userId={userId} initialRequestCount={1} />
         </li>
 
         <li>{overviewList}</li>
