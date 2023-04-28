@@ -15,11 +15,13 @@ function getCredentials(provider: 'google' | 'github') {
     clientSecret = process.env.GITHUB_CLIENT_SECRET as string;
   }
 
-  if (!clientId || clientId.length === 0)
-    throw new Error('Missing GOOGLE_CLIENT_ID');
+  if (!clientId || clientId.length === 0) {
+    throw new Error(`Missing ${provider.toUpperCase()}_CLIENT_ID`);
+  }
 
-  if (!clientSecret || clientSecret.length === 0)
-    throw new Error('Missing GOOGLE_CLIENT_SECRET');
+  if (!clientSecret || clientSecret.length === 0) {
+    throw new Error(`Missing ${provider.toUpperCase()}_CLIENT_SECRET`);
+  }
 
   return { clientId, clientSecret };
 }
@@ -55,7 +57,7 @@ export const authOptions: NextAuthOptions = {
         id,
         name,
         email,
-        image,
+        picture: image,
       };
     },
     async session({ session, token }) {
