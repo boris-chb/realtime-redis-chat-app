@@ -1,7 +1,7 @@
 import { fetchRedis } from '@/helpers/redis';
 import { authOptions } from '@/lib/auth';
 import { db } from '@/lib/db';
-import { addContactValidator } from '@/lib/validation/add-contact';
+import { addContactValidator } from '@/lib/validation/contact';
 import { getServerSession } from 'next-auth';
 import { z } from 'zod';
 
@@ -20,8 +20,15 @@ export async function POST(request: Request) {
       `user:email:${emailToAdd}`
     )) as string;
 
-    if (!idToAdd || idToAdd === session.user.id)
-      return new Response('Could not find user');
+    if (!idToAdd)
+      return new Response(`Could not find user`, {
+        status: 404,
+      });
+
+    if (idToAdd === session.user.id)
+      return new Response("You can't send a friend request to yourself :(", {
+        status: 404,
+      });
 
     // friend request already sent
     const requestAlreadySent = (await fetchRedis(

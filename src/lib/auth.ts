@@ -3,6 +3,7 @@ import { NextAuthOptions } from 'next-auth';
 import GoogleProvider from 'next-auth/providers/google';
 import GithubProvider from 'next-auth/providers/github';
 import { db } from './db';
+import { fetchRedis } from '@/helpers/redis';
 
 function getCredentials(provider: 'google' | 'github') {
   let clientId, clientSecret;
@@ -44,12 +45,16 @@ export const authOptions: NextAuthOptions = {
   ],
   callbacks: {
     async jwt({ token, user }) {
-      const dbUser = (await db.get(`user:${token.id}`)) as User | null;
+      const userData = (await fetchRedis('get', `user:${token.id}`)) as
+        | string
+        | null;
 
-      if (!dbUser) {
+      if (!userData) {
         token.id = user.id;
         return token;
       }
+
+      const dbUser = JSON.parse(userData);
 
       const { id, email, image, name } = dbUser;
 

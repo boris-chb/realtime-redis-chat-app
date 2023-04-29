@@ -1,0 +1,13 @@
+import { z } from 'zod';
+
+export const messageValidator = z.object({
+  id: z.string(),
+  senderId: z.string(),
+  receiverId: z.string(),
+  timestamp: z.number(),
+  body: z.string().max(255),
+});
+
+export const messageArrayValidator = z.array(messageValidator);
+
+export type Message = z.infer<typeof messageValidator>;

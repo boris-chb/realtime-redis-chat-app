@@ -1,7 +1,6 @@
 import { authOptions } from '@/lib/auth';
 import { getServerSession } from 'next-auth';
 import { FC, ReactElement, ReactNode } from 'react';
-import { redirect } from 'next/navigation';
 import Link from 'next/link';
 
 import { FaTelegramPlane } from 'react-icons/fa';
@@ -35,17 +34,17 @@ const sidebarOptions: SidebarOption[] = [
 
 const Layout = async ({ children }: LayoutProps) => {
   const session = await getServerSession(authOptions);
-  if (!session) redirect('/login');
+  if (!session) return;
 
   const userId = session.user.id;
 
-  // TODO
-  // const initialRequestCount = (
-  //   (await fetchRedis(
-  //     'smembers',
-  //     `user:${userId}:incoming_friend_requests`
-  //   )) as User[]
-  // ).length;
+  // fetch incoming friend request cound from db
+  const initialRequestCount = (
+    (await fetchRedis(
+      'smembers',
+      `user:${userId}:incoming_friend_requests`
+    )) as User[]
+  ).length;
 
   const chatsData = [
     { id: 1, title: 'Chat 1' },
@@ -60,6 +59,7 @@ const Layout = async ({ children }: LayoutProps) => {
         <Image
           fill
           referrerPolicy='no-referrer'
+          sizes='auto'
           className='rounded-full'
           src={session.user.image || ''}
           alt='Your profile picture'
@@ -107,7 +107,10 @@ const Layout = async ({ children }: LayoutProps) => {
         ))}
 
         <li>
-          <FriendRequestSidebarOption userId={userId} initialRequestCount={1} />
+          <FriendRequestSidebarOption
+            userId={userId}
+            initialRequestCount={initialRequestCount}
+          />
         </li>
 
         <li>{overviewList}</li>

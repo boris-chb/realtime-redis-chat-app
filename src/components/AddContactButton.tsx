@@ -2,7 +2,7 @@
 
 import { FC, useState } from 'react';
 import Button from './UI/Button';
-import { addContactValidator } from '@/lib/validation/add-contact';
+import { addContactValidator } from '@/lib/validation/contact';
 import axios, { AxiosError } from 'axios';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
@@ -31,10 +31,11 @@ const AddContactButton: FC<AddContactButtonProps> = ({}) => {
         email,
       });
 
-      // TODO
-      // await axios.post('/api/contacts/add', {
-      //   email: validatedEmail,
-      // });
+      let res = await axios.post('/api/contacts/add', {
+        email: validatedEmail,
+      });
+
+      console.log(res);
 
       setContactAddedSuccess(true);
     } catch (error) {
