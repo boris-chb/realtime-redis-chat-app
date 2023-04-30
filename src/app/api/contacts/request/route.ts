@@ -16,10 +16,10 @@ export async function POST(request: Request) {
 
     const body = await request.json();
 
-    const { senderId, action } = friendRequestValidator.parse(
-      body.senderId,
-      body.action
-    );
+    const { senderId, action } = friendRequestValidator.parse({
+      senderId: body.senderId,
+      action: body.action,
+    });
 
     if (action === 'ACCEPT') {
       // add senderId to current logged in user (userId)
@@ -36,6 +36,7 @@ export async function POST(request: Request) {
     return new Response('OK', { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
+      console.log(error.errors.forEach((e) => console.log(e.message)));
       return new Response('Invalid request payload', { status: 422 });
     }
 

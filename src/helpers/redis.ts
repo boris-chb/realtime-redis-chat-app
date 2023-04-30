@@ -21,6 +21,8 @@ export async function fetchRedis(
 
   const data = await response.json();
   // const result = JSON.parse(data.result);
-
+  if (command === 'get') {
+    return JSON.parse(data.result);
+  }
   return data.result;
 }

@@ -48,11 +48,14 @@ const Page = async ({ params }: PageProps) => {
     // notFound();
   }
 
-  const partnerUser = JSON.parse(
-    (await db.get(`user:${partnerId}`)) as string
-  ) as User;
+  const partnerUser = await db.get(`user:${partnerId}`);
+  const redisGET = await fetchRedis('get', `user:${userId}`);
+  const redisSMEMBERS = await fetchRedis('smembers', `user:${userId}:contacts`);
 
-  return <div>{123}</div>;
+  console.log('GET', typeof redisGET);
+  console.log('SMEMBERS isArray', Array.isArray(redisSMEMBERS));
+
+  return <div>{JSON.stringify(redisGET)}</div>;
 };
 
 export default Page;
