@@ -25,13 +25,20 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ contacts, userId }) => {
   const chatList = contacts.map((contact) => {
     const unseenMessageCount = unseenMessages.filter(
       (msg) => msg.senderId === contact.id
-    );
+    ).length;
 
-    console.log(contact);
     return (
       <li key={contact.id}>
-        <a href={`/dashboard/chat/${chatHrefBuilder(userId, contact.id)}`}>
-          hi
+        <a
+          className='flex items-center p-2 text-sm font-semibold leading-6 text-gray-700 rounded-md hover:text-indigo-600 hover:bg-gray-50 group gap-x-3'
+          href={`/dashboard/chat/${chatHrefBuilder(userId, contact.id)}`}
+        >
+          {contact.name}
+          {unseenMessageCount && (
+            <div className='flex items-center justify-center w-4 h-4 text-sm font-medium text-white bg-indigo-600 rounded-full'>
+              {unseenMessageCount}
+            </div>
+          )}
         </a>
       </li>
     );
