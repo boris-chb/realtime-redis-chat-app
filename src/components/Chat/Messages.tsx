@@ -13,37 +13,13 @@ const Messages: FC<MessagesProps> = ({ initialMessages, userId }) => {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const scrolldownRef = useRef<HTMLDivElement | null>(null);
 
-  const dummyMessages = [
-    {
-      id: 'abc123',
-      senderId: 'f0d9400a-2307-4002-8b39-e1f37f9bfe45',
-      receiverId: '31bc93be-5b0a-4782-a16e-d26833a33727',
-      timestamp: 1620054000,
-      body: 'Hello, how are you doing today?',
-    },
-    {
-      id: 'def456',
-      senderId: '31bc93be-5b0a-4782-a16e-d26833a33727',
-      receiverId: 'f0d9400a-2307-4002-8b39-e1f37f9bfe45',
-      timestamp: 1620055000,
-      body: "I'm doing well, thanks for asking. How about you?",
-    },
-    {
-      id: 'ghi789',
-      senderId: 'user1',
-      receiverId: 'user2',
-      timestamp: 1620056000,
-      body: "I'm doing pretty good too. What are your plans for the weekend?",
-    },
-  ];
-
   return (
     <div
       id='messages'
       className='flex flex-col-reverse flex-1 h-full gap-4 p-3 overflow-y-auto scrolling-touch scrollbar-thumb-blue scrollbar-thumb-rounded scrollbar-track-blue-lighter scrollbar-w-2'
     >
       <div ref={scrolldownRef} className='flex'></div>
-      {dummyMessages.map((msg, i) => {
+      {initialMessages.map((msg, i) => {
         const isCurrentUser = msg.senderId === userId;
 
         return (

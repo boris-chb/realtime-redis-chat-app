@@ -3,6 +3,7 @@
 import { chatHrefBuilder } from '@/lib/utils';
 import { usePathname, useRouter } from 'next/navigation';
 import { FC, useEffect, useState } from 'react';
+import MenuLinkItem from '../UI/MenuLinkItem';
 
 interface SidebarChatListProps {
   contacts: User[];
@@ -29,17 +30,11 @@ const SidebarChatList: FC<SidebarChatListProps> = ({ contacts, userId }) => {
 
     return (
       <li key={contact.id}>
-        <a
-          className='flex items-center p-2 text-sm font-semibold leading-6 text-gray-700 rounded-md hover:text-indigo-600 hover:bg-gray-50 group gap-x-3'
+        <MenuLinkItem
+          badge={unseenMessageCount > 0 ? unseenMessageCount : undefined}
+          title={contact.name}
           href={`/dashboard/chat/${chatHrefBuilder(userId, contact.id)}`}
-        >
-          {contact.name}
-          {unseenMessageCount && (
-            <div className='flex items-center justify-center w-4 h-4 text-sm font-medium text-white bg-indigo-600 rounded-full'>
-              {unseenMessageCount}
-            </div>
-          )}
-        </a>
+        ></MenuLinkItem>
       </li>
     );
   });

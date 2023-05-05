@@ -2,9 +2,10 @@
 
 import { FC, KeyboardEventHandler, useRef, useState } from 'react';
 import TextareaAutosize from 'react-textarea-autosize';
-import Button from './UI/Button';
+import Button from '../UI/Button';
 import axios from 'axios';
 import { toast } from 'react-hot-toast';
+import { getSession } from 'next-auth/react';
 
 interface ChatInputProps {
   chatId: string;
@@ -22,7 +23,8 @@ const ChatInput: FC<ChatInputProps> = ({ chatId }) => {
       await axios.post('/api/message/send', { text: input, chatId });
       setInput('');
       textareaRef.current?.focus();
-    } catch {
+    } catch (e) {
+      console.log(e);
       toast.error('Failed sending message. Please try again');
     } finally {
       setIsLoading(false);

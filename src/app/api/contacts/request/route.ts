@@ -1,3 +1,4 @@
+import { handleZodError } from '@/helpers/handlerZodError';
 import { authOptions } from '@/lib/auth';
 import { db } from '@/lib/db';
 import {
@@ -36,8 +37,7 @@ export async function POST(request: Request) {
     return new Response('OK', { status: 200 });
   } catch (error) {
     if (error instanceof z.ZodError) {
-      console.log(error.errors.forEach((e) => console.log(e.message)));
-      return new Response('Invalid request payload', { status: 422 });
+      return handleZodError(error);
     }
 
     return new Response('Invalid request');

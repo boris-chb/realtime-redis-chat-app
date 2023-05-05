@@ -8,3 +8,5 @@ export const friendRequestValidator = z.object({
   senderId: z.string(),
   action: z.literal('ACCEPT').or(z.literal('REJECT')),
 });
+
+export type FormData = z.infer<typeof addContactValidator>;

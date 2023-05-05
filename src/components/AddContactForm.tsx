@@ -2,17 +2,13 @@
 
 import { FC, useState } from 'react';
 import Button from './UI/Button';
-import { addContactValidator } from '@/lib/validation/contact';
+import { addContactValidator, FormData } from '@/lib/validation/contact';
 import axios, { AxiosError } from 'axios';
 import { z } from 'zod';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 
-interface AddContactButtonProps {}
-
-type FormData = z.infer<typeof addContactValidator>;
-
-const AddContactButton: FC<AddContactButtonProps> = ({}) => {
+const AddContactForm: FC = () => {
   const [contactAddedSuccess, setContactAddedSuccess] =
     useState<boolean>(false);
 
@@ -84,4 +80,4 @@ const AddContactButton: FC<AddContactButtonProps> = ({}) => {
   );
 };
 
-export default AddContactButton;
+export default AddContactForm;

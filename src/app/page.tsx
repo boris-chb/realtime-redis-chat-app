@@ -1,8 +1,7 @@
 import { db } from '@/lib/db';
+import { redirect } from 'next/navigation';
 
 export default async function Home() {
-  // testing db
-  // await db.set('is', 'working');
-
-  return <div className='text-red-500'>hello world</div>;
+  redirect('/dashboard');
+  return <></>;
 }

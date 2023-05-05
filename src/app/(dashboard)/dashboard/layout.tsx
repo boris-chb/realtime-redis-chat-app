@@ -1,5 +1,5 @@
 import FriendRequestSidebarOption from '@/components/FriendRequestSidebarOption';
-import SidebarChatList from '@/components/SidebarChatList';
+import SidebarChatList from '@/components/Sidebar/Sidebar';
 import SignOutButton from '@/components/SignOutButton';
 import Logo from '@/components/UI/Icons/Logo';
 import MenuLinkItem from '@/components/UI/MenuLinkItem';
