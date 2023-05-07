@@ -9,11 +9,11 @@ function getCredentials(provider: 'google' | 'github') {
   let clientId, clientSecret;
 
   if (provider === 'google') {
-    clientId = process.env.GOOGLE_CLIENT_ID as string;
-    clientSecret = process.env.GOOGLE_CLIENT_SECRET as string;
+    clientId = process.env.GOOGLE_CLIENT_ID;
+    clientSecret = process.env.GOOGLE_CLIENT_SECRET;
   } else if (provider === 'github') {
-    clientId = process.env.GITHUB_CLIENT_ID as string;
-    clientSecret = process.env.GITHUB_CLIENT_SECRET as string;
+    clientId = process.env.GITHUB_CLIENT_ID;
+    clientSecret = process.env.GITHUB_CLIENT_SECRET;
   }
 
   if (!clientId || clientId.length === 0) {
@@ -37,6 +37,11 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: getCredentials('google').clientId,
       clientSecret: getCredentials('google').clientSecret,
+      authorization: {
+        params: {
+          prompt: 'select_account',
+        },
+      },
     }),
     GithubProvider({
       clientId: getCredentials('github').clientId,

@@ -1,15 +1,23 @@
 'use client';
 
+import { formatTimestamp } from '@/helpers/formatTimestamp';
 import { cn } from '@/lib/utils';
 import { Message } from '@/lib/validation/message';
+import { User } from 'next-auth';
+import Image from 'next/image';
 import { FC, useRef, useState } from 'react';
 
 interface MessagesProps {
   initialMessages: Message[];
-  userId: string;
+  currentUser: User;
+  partnerUser: User;
 }
 
-const Messages: FC<MessagesProps> = ({ initialMessages, userId }) => {
+const Messages: FC<MessagesProps> = ({
+  initialMessages,
+  currentUser,
+  partnerUser,
+}) => {
   const [messages, setMessages] = useState<Message[]>(initialMessages);
   const scrolldownRef = useRef<HTMLDivElement | null>(null);
 
@@ -20,7 +28,7 @@ const Messages: FC<MessagesProps> = ({ initialMessages, userId }) => {
     >
       <div ref={scrolldownRef} className='flex'></div>
       {initialMessages.map((msg, i) => {
-        const isCurrentUser = msg.senderId === userId;
+        const isCurrentUser = msg.senderId === currentUser.id;
 
         return (
           <div key={`${msg.id}-${msg.timestamp}`}>
@@ -47,9 +55,28 @@ const Messages: FC<MessagesProps> = ({ initialMessages, userId }) => {
                   {msg.body}
                   <span className='ml-2 text-xs text-gray-400'>
                     <br />
-                    {JSON.stringify(new Date(msg.timestamp))}
+                    {formatTimestamp(msg.timestamp)}
                   </span>
                 </span>
+              </div>
+
+              <div
+                className={cn('relative w-6 h-6', {
+                  'order-2': isCurrentUser,
+                  'order-1': !isCurrentUser,
+                })}
+              >
+                <Image
+                  alt='user-avatar'
+                  fill
+                  src={
+                    isCurrentUser
+                      ? (currentUser.image as string)
+                      : (partnerUser.image as string)
+                  }
+                  referrerPolicy='no-referrer'
+                  className='rounded-full'
+                />
               </div>
             </div>
           </div>

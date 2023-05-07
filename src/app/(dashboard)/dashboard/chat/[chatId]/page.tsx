@@ -5,6 +5,7 @@ import { fetchRedis } from '@/helpers/redis';
 import { authOptions } from '@/lib/auth';
 import { db } from '@/lib/db';
 import { messageArrayValidator } from '@/lib/validation/message';
+import { User } from '@/types/next-auth';
 import { getServerSession } from 'next-auth';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
@@ -20,13 +21,13 @@ const Page = async ({ params }: PageProps) => {
   const { chatId } = params;
   const session = await getServerSession(authOptions);
   if (!session) return;
-  const user = session.user;
+  const currentUser = session.user;
   const [userId1, userId2] = chatId.split('--');
 
-  const partnerId = userId1 === user.id ? userId2 : userId1;
-  const userId = userId1 === user.id ? userId2 : userId1;
+  const partnerId = userId1 === currentUser.id ? userId2 : userId1;
+  const userId = userId1 === currentUser.id ? userId2 : userId1;
 
-  if (user.id !== userId) {
+  if (userId !== currentUser.id) {
     // is not part of this chat!
     // notFound();
   }
@@ -44,7 +45,7 @@ const Page = async ({ params }: PageProps) => {
             <div className='relative w-8 h-8 sm:w-12 sm:h-12'>
               <Image
                 fill
-                src={partnerUser.image}
+                src={partnerUser.image as string}
                 alt={`${partnerUser.name}-avatar`}
                 referrerPolicy='no-referrer'
                 className='rounded-full'
@@ -62,7 +63,11 @@ const Page = async ({ params }: PageProps) => {
           </div>
         </div>
       </div>
-      <Messages initialMessages={initialMessages} userId={userId} />
+      <Messages
+        initialMessages={initialMessages}
+        currentUser={currentUser}
+        partnerUser={partnerUser}
+      />
       <ChatInput chatId={chatId} />
     </div>
   );

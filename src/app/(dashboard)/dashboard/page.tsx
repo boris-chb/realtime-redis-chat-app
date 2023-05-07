@@ -9,17 +9,7 @@ const page: FC<pageProps> = ({}) => {
   // TODO
   // const session = await getServerSession(authOptions)
 
-  return (
-    <div>
-      <Button size='lg' variant={'ghost'}>
-        ghost lg btn
-      </Button>
-      <Button>default btn</Button>
-      <Button size='sm' variant={'default'}>
-        active sm btn
-      </Button>
-    </div>
-  );
+  return <div>Select a chat</div>;
 };
 
 export default page;

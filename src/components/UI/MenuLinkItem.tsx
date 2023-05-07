@@ -26,7 +26,7 @@ const MenuLinkItem: FC<MenuLinkItemProps> = ({ href, Icon, title, badge }) => {
         )}
         <span className='truncate grow'>{title}</span>
         {badge && (
-          <div className='flex items-center justify-center w-full h-5 text-xs text-white bg-indigo-600 rounded-lg'>
+          <div className='flex items-center justify-center w-5 h-5 text-xs text-white bg-indigo-600 rounded-lg'>
             {badge}
           </div>
         )}
