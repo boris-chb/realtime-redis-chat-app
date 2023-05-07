@@ -31,7 +31,7 @@ const Page = async () => {
       <h1 className='mb-8 text-5xl font-bold'>Friend requests</h1>
       <div className='flex flex-col gap-4'>
         <FriendRequests
-          sessionId={userId}
+          currentUserId={userId}
           incomingFriendRequests={incomingFriendRequests}
         />
       </div>

@@ -26,8 +26,11 @@ const FriendRequests: FC<FriendRequestsProps> = ({
       toPusherKey(`user:${currentUserId}:incoming_friend_requests`)
     );
 
-    const friendRequestHandler = () => {
-      console.log('new friend request');
+    const friendRequestHandler = ({
+      senderId,
+      senderEmail,
+    }: IncomingFriendRequest) => {
+      setFriendRequests((prev) => [...prev, { senderId, senderEmail }]);
     };
 
     pusherClient.bind('incoming_friend_requests', friendRequestHandler);
@@ -38,7 +41,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
       );
       pusherClient.unbind('incoming_friend_requests', friendRequestHandler);
     };
-  }, []);
+  }, [currentUserId]);
 
   const handleFriendRequest = async (
     senderId: string,
