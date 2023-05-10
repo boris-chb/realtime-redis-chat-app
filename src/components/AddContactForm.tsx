@@ -21,7 +21,7 @@ const AddContactForm: FC = () => {
     resolver: zodResolver(addContactValidator),
   });
 
-  const addContact = async (email: string) => {
+  const onAddContact = async (email: string) => {
     try {
       const validatedEmail = addContactValidator.parse({
         email,
@@ -50,7 +50,7 @@ const AddContactForm: FC = () => {
   };
 
   const onSubmit = (data: FormData) => {
-    addContact(data.email);
+    onAddContact(data.email);
   };
 
   return (
@@ -70,7 +70,6 @@ const AddContactForm: FC = () => {
         />
         <Button>Add</Button>
       </div>
-      {/* <p className='mt-1 text-sm text-red-600'>{errors.email?.message}</p> */}
       {!!contactAddedSuccess ? (
         <p className='mt-1 text-sm text-green-600'>Request sent.</p>
       ) : (

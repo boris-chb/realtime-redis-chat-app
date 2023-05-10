@@ -59,7 +59,7 @@ const FriendRequests: FC<FriendRequestsProps> = ({
   return (
     <>
       {friendRequests.length === 0 ? (
-        <p className='text-sm'>No requests :( Perhaps add a friend yourself?</p>
+        <p className='text-sm'>No friend requests</p>
       ) : (
         friendRequests.map(({ senderEmail, senderId }) => (
           <div key={senderId} className='flex items-center gap-4'>

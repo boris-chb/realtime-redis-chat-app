@@ -17,6 +17,7 @@ const ChatInput: FC<ChatInputProps> = ({ chatId }) => {
   const textareaRef = useRef<HTMLTextAreaElement | null>(null);
 
   const sendMessage = async () => {
+    if (!input) return;
     setIsLoading(true);
     try {
       // await new Promise((reject) => setTimeout(reject, 1000));
@@ -39,7 +40,7 @@ const ChatInput: FC<ChatInputProps> = ({ chatId }) => {
   };
 
   return (
-    <div className='px-4 mb-2 border-t border-gray-200 sm:mb-0'>
+    <div className='px-4 py-4 mb-2 border-t border-gray-200 sm:mb-0'>
       <div className='relative flex-1 overflow-hidden rounded-lg shadow-sm ring-1 ring-inset ring-gray-300 focus-within:ring-1 focus-within:ring-indigo-600'>
         <TextareaAutosize
           ref={textareaRef}

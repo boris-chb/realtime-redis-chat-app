@@ -1,6 +1,8 @@
 import { handleZodError } from '@/helpers/handlerZodError';
 import { authOptions } from '@/lib/auth';
 import { db } from '@/lib/db';
+import { pusherServer } from '@/lib/pusher';
+import { toPusherKey } from '@/lib/utils';
 import { Message, messageValidator } from '@/lib/validation/message';
 import { nanoid } from 'nanoid';
 import { getServerSession } from 'next-auth';
@@ -29,6 +31,9 @@ export async function POST(req: Request) {
       timestamp,
       body: text,
     });
+
+    // notify clients
+    pusherServer.trigger(toPusherKey(`chat:${chatId}`), 'new_message', message);
 
     await db.zadd(`chat:${chatId}:messages`, {
       score: Date.now(),
